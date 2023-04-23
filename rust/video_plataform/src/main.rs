@@ -1,12 +1,12 @@
 pub mod business;
 
+use std::fs::File;
 use business::video::Video;
 use business::video_file::VideoFile;
 
 fn main() {
     let video_file = VideoFile::new(
-        String::from("video.mp4"),
-        String::from("s3://bucket-name/path/to/file"));
+        File::open("test.mp4").unwrap());
 
     println!("video_file: {:?}", video_file);
 

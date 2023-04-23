@@ -17,11 +17,11 @@ impl UploadToS3 {
 }
 
 
-fn mock_upload_file<U>(file: File, client: U) -> Result<String, Error> where U: UploadClient,
+fn mock_upload_file<U>(video_file: &VideoFile, client: U) -> Result<String, Error> where U: UploadClient,
 {
 
-    let result = client.upload(&file);
-    Ok(String::from("s3://bucket-name/path/to/file"))
+    let result = client.upload(video_file);
+    Ok(String::from("s3://video_platform/test/"))
 
 
 }
@@ -35,17 +35,18 @@ mod test {
     #[test]
     fn should_return_s3_path_when_uploaded_with_success() {
         // Arrange
-        let file = File::create("test.mp4").unwrap();
-        let video_file = VideoFile::new(file, String::from("test"));
+        let file_name = String::from("test.mp4");
+        let video_file = VideoFile::new( File::create(file_name).unwrap());
+        let path_expected = String::from("s3://video_platform/test/");
 
         // Act
         let mut client = s3client::MockUploadClient::new();
-        client.expect_upload().returning(|_| Ok(String::from("s3://bucket-name/path/to/file")));
+        client.expect_upload().returning(|_| Ok(String::from("s3://video_platform/test/")));
 
-        let result = mock_upload_file(video_file.file, client);
+        let result = mock_upload_file(&video_file, client);
 
         // Assert
-        assert_eq!(result.unwrap(), String::from("s3://bucket-name/path/to/file"));
+        assert_eq!(result.unwrap(), path_expected);
     }
 
 }
