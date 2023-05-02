@@ -58,12 +58,6 @@ public class CustomHashTable<TKey, TValue> implements HashTable<TKey, TValue> {
     }
 
     @Override
-    public boolean containsKey(TKey tKey) {
-        TablePair<TKey, TValue> tablePairByKey = getTablePairByKey(tKey);
-        return tablePairByKey != null;
-    }
-
-    @Override
     public void remove(TKey tKey) {
         var hash = tKey.hashCode();
         var index = hash % table.length;

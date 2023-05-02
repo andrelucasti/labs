@@ -6,8 +6,6 @@ public interface HashTable<TKey, TValue> {
 
     TValue get(TKey key);
 
-    boolean containsKey(TKey key);
-
     void remove(TKey key);
 
 }
